@@ -1182,10 +1182,10 @@ class SlackRTM(object):
                 # this hangout message originated in slack
                 self.sending -= 1
                 command = event.text.split(': ')[1]
-                event = copy.deepcopy(event)
-                event.text = command
+                fake_event = copy.deepcopy(event)
+                fake_event.text = command
                 logger.debug('attempting to execute %s', command)
-                yield from self.bot._handlers.handle_command(event)
+                yield from self.bot._handlers.handle_command(fake_event)
                 return
             if self.lastimg and self.lastimg in event.text:
                 # already seen this image, skip
