@@ -59,6 +59,7 @@ import emoji
 from websocket import WebSocketConnectionClosedException
 from slackclient import SlackClient
 import html # for html.unescape
+import copy
 
 logger = logging.getLogger(__name__)
 
@@ -1181,6 +1182,7 @@ class SlackRTM(object):
                 # this hangout message originated in slack
                 self.sending -= 1
                 command = event.text.split(': ')[1]
+                event = copy.deepcopy(event)
                 event.text = command
                 logger.debug('attempting to execute %s', command)
                 yield from self.bot._handlers.handle_command(event)
